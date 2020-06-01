@@ -1,0 +1,55 @@
+﻿@model IT_GAMK_Lab5.Models.UserViewModel
+<style>
+    .hidden{
+        
+    }
+</style>
+
+@using (Html.BeginForm())
+{
+
+    <div class="form-group">
+        <h4 id="userEmail">@Model.Email's current roles:</h4>
+        <div class="form-inline" style="margin-top:10px;">
+
+            <div class="row">
+                @Html.DropDownListFor(m => m.RoleNameToRemove, new SelectList(Model.UserRoles), new { @class = "form-control", style = "margin-right:5px;", id = "roleNameToRemove"})
+                
+                <script>
+                    getButtonOrDefaultLabel();
+                    $('#roleNameToRemove').on('change', function () {
+                        getButtonOrDefaultLabel();
+                    });
+
+                    function getButtonOrDefaultLabel() {
+                        console.log($('#roleNameToRemove option:selected').val());
+                        if ($('#roleNameToRemove option:selected').val() == "User") {
+                            $('#defaultUserSpan').show();
+                            $('#removeButton').hide();
+                        }
+                        else {
+                            $('#defaultUserSpan').hide();
+                            $('#removeButton').show();
+                        }
+                    }
+                </script>
+                    <span class="badge badge-secondary" id="defaultUserSpan">Default Role</span>
+                    
+                    <input type="submit" id="removeButton" class="btn btn-danger removeButton" value="Remove Role" formaction="RemoveRoleFromUser" formmethod="post" />
+                    
+    
+            </div>
+
+            
+        </div>
+        </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.AvailableRolesForUser)
+
+        @Html.HiddenFor(m => m.UserId)
+        <div class="row">
+            @Html.DropDownListFor(m => m.RoleName, new SelectList(Model.AvailableRolesForUser), new { @class = "form-control col-md-4", style = "margin-right:5px;" })
+            <input type="submit" class="btn btn-primary col-md-2" value="Add Role" formaction="AddUserRole" formmethod="post"/>
+        </div>
+    </div>
+}

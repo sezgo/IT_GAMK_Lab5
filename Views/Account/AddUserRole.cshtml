@@ -1,0 +1,54 @@
+﻿@model IT_GAMK_Lab5.Models.AddUserRoleViewModel
+@{
+    ViewBag.Title = "Manage User Roles";
+}
+<style>
+    .row {
+        margin-right: 0px;
+        margin-left: 0px;
+    }
+</style>
+@using (Html.BeginForm())
+{
+    
+    <h2>Manage User Roles</h2>
+    <hr />
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                @Html.LabelFor(m => m.Users)
+                @Html.DropDownListFor(m => m.SelectedUser, new SelectList(Model.Users, Model.SelectedUser), new { @class = "form-control", id = "usersList" })
+            </div>
+
+        </div>
+        <div class="col-md-6">
+            <div id="userRolesList" class="row">
+                @*Partial View ListUserRoles shows up here*@
+            </div>
+        </div>
+    </div>
+
+}
+
+
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            listUserRoles();
+
+            var ddlUsers = $('#usersList');
+            ddlUsers.on('change', function () {
+                listUserRoles();
+            });
+        });
+
+        function listUserRoles() {
+
+            var username = $('#usersList option:selected').val();
+
+            $('#userRolesList').load('/Account/ListUserRoles?username=' + username);
+        }
+    </script>
+}
+
